@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/oliverbenns/webgl-fun#readme",
   "devDependencies": {
+    "@types/webgl2": "0.0.3",
     "raw-loader": "^0.5.1",
     "ts-loader": "^4.2.0",
     "typescript": "^2.8.1",
