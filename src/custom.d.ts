@@ -1,9 +1,9 @@
 declare module "*.frag" {
-  const content: string;
+  const content: GL.ShaderSource;
   export default content;
 }
 
 declare module "*.vert" {
-  const content: string;
+  const content: GL.ShaderSource;
   export default content;
 }
