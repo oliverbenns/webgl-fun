@@ -1,7 +1,3 @@
-namespace GL {
-  // General
-  type Context = CanvasRenderingContext2D | WebGLRenderingContext;
-
-  // Shaders
+declare namespace GL {
   type ShaderSource = string;
 }

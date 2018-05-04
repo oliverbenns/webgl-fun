@@ -1,5 +1,10 @@
 import vertexShaderSource from 'shaders/vertex.vert'
 import fragmentShaderSource from 'shaders/fragment.frag'
+import createShader from 'create-shader';
+import createProgram from 'create-program';
+import initBuffer from 'init-buffer';
+import vertices from 'data/vertices';
+import colors from 'data/colors';
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 
@@ -9,54 +14,24 @@ if (!gl) {
   console.log('WebGL is not supported. Sorry!');
 }
 
-function createShader(gl: WebGLRenderingContext, type: GLenum, source: GL.ShaderSource) {
-  var shader = gl.createShader(type);
-  gl.shaderSource(shader, source);
-  gl.compileShader(shader);
-  var success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
-  if (success) {
-    return shader;
-  }
-
-  console.log(gl.getShaderInfoLog(shader));
-  gl.deleteShader(shader);
-}
-
-function createProgram(gl: WebGLRenderingContext, vertexShader: WebGLShader, fragmentShader: WebGLShader) {
-  var program = gl.createProgram();
-  gl.attachShader(program, vertexShader);
-  gl.attachShader(program, fragmentShader);
-  gl.linkProgram(program);
-  var success = gl.getProgramParameter(program, gl.LINK_STATUS);
-  if (success) {
-    return program;
-  }
-
-  console.log(gl.getProgramInfoLog(program));
-  gl.deleteProgram(program);
-}
-
 var vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
 var fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
-
-
 var program = createProgram(gl, vertexShader, fragmentShader);
 
-var positionAttributeLocation = gl.getAttribLocation(program, "a_position");
-var positionBuffer = gl.createBuffer();
+var positionAttributeLocation = gl.getAttribLocation(program, 'a_position');
+var colorAttributeLocation = gl.getAttribLocation(program, 'a_color');
 
-gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+console.log('positionAttributeLocation', positionAttributeLocation);
+console.log('colorAttributeLocation', colorAttributeLocation);
 
-var positions = [
-  0, 0,
-  0, 0.5,
-  0.7, 0,
-];
-gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
-
-var vao = gl.createVertexArray();
-
+const vao = gl.createVertexArray();
 gl.bindVertexArray(vao);
+
+// ==========
+// POSITIONS
+//
+
+initBuffer(gl, vertices);
 
 gl.enableVertexAttribArray(positionAttributeLocation);
 
@@ -67,15 +42,33 @@ var stride = 0;        // 0 = move forward size * sizeof(type) each iteration to
 var offset = 0;        // start at the beginning of the buffer
 gl.vertexAttribPointer(positionAttributeLocation, size, type, normalize, stride, offset)
 
+// ==========
+// COLORS
+//
+
+initBuffer(gl, colors);
+
+gl.enableVertexAttribArray(colorAttributeLocation);
+
+var _size = 4;          // 4 components per iteration
+var _type = gl.FLOAT;   // the data is 32bit floats
+var _normalize = false; // don't normalize the data
+var _stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
+var _offset = 0;        // start at the beginning of the buffer
+gl.vertexAttribPointer(colorAttributeLocation, _size, _type, _normalize, _stride, _offset)
+
 // Tell WebGL that our clip space maps to the size of the canvas
 gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
 // Clear the canvas
 gl.clearColor(0, 0, 0, 0);
-gl.clear(gl.COLOR_BUFFER_BIT);
+gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 // Tell it to use our program (pair of shaders)
 gl.useProgram(program);
+// gl.uniform4f(modifierLocation, 5.0, 5.0, 5.0, 5.0);
+// const foo = gl.getUniform(program, modifierLocation)
+// console.log('foo', foo);
 
 // Bind the attribute/buffer set we want.
 gl.bindVertexArray(vao);
