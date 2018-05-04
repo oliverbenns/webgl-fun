@@ -19,6 +19,7 @@
   "homepage": "https://github.com/oliverbenns/webgl-fun#readme",
   "devDependencies": {
     "@types/webgl2": "0.0.3",
+    "ava": "^0.25.0",
     "raw-loader": "^0.5.1",
     "ts-loader": "^4.2.0",
     "typescript": "^2.8.1",
@@ -28,6 +29,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --hot --inline --mode development",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "test": "tsc && ava"
   }
 }
