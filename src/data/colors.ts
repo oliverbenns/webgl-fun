@@ -1,9 +1,11 @@
-const orange = [255, 120, 0, 1];
-const red = [0.99, 0.5, 0.5, 1];
+import color from 'lib/color';
+
+const red = [...color.hexToShaderRgb('ff0b00'), 1];
+const blue = [...color.hexToShaderRgb('00c4ff'), 1];
 
 const colors = [
   ...red,
-  ...red,
+  ...blue,
   ...red,
 ];
 
