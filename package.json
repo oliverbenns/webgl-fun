@@ -18,9 +18,11 @@
   },
   "homepage": "https://github.com/oliverbenns/webgl-fun#readme",
   "devDependencies": {
+    "@types/jest": "^22.2.3",
     "@types/webgl2": "0.0.3",
-    "ava": "^1.0.0-beta.4",
+    "jest": "^22.4.3",
     "raw-loader": "^0.5.1",
+    "ts-jest": "^22.4.4",
     "ts-loader": "^4.2.0",
     "typescript": "^2.8.1",
     "webpack": "^4.5.0",
@@ -30,6 +32,13 @@
   "scripts": {
     "start": "webpack-dev-server --hot --inline --mode development",
     "build": "webpack --mode production",
-    "test": "tsc && ava"
+    "test": "jest src"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.ts": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|test.ts)",
+    "moduleFileExtensions": ["js", "ts"]
   }
 }
