@@ -23,6 +23,14 @@ const colors = [
     name: 'Bright Yellow (Crayola)', hex: 'FF9F1C',
     rgb: [255, 159, 28], shader: [1.0, 0.62, 0.11],
   },
+  {
+    name: 'Black', hex: '000000',
+    rgb: [0, 0, 0], shader: [0, 0, 0],
+  },
+  {
+    name: 'White', hex: 'FFFFFF',
+    rgb: [255, 255, 255], shader: [1, 1, 1],
+  },
 ]
 
 describe('color', () => {
