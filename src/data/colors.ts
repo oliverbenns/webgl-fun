@@ -1,10 +1,13 @@
 import color from 'lib/color';
 
-const red = [...color.hexToShaderRgb('#ff0b00'), 1];
-const blue = [...color.hexToShaderRgb('#00c4ff'), 1];
+const red = color.hexToRgb('#ff0b00');
+const blue = color.hexToRgb('#00c4ff');
 
-const green = [...color.hexToShaderRgb('#01cd74'), 1];
-const yellow = [...color.hexToShaderRgb('#fff200'), 1];
+const green = color.hexToRgb('#01cd74');
+const yellow = color.hexToRgb('#fff200');
+
+// Give the colors an alpha channel.
+[red, blue, green, yellow].forEach(c => c.push(255));
 
 const colors = [
   ...red,
@@ -15,4 +18,4 @@ const colors = [
   ...green,
 ];
 
-export default new Float32Array(colors);
+export default new Uint8Array(colors);

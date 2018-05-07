@@ -51,8 +51,8 @@ initBuffer(gl, colors);
 gl.enableVertexAttribArray(colorAttributeLocation);
 
 var _size = 4;          // 4 components per iteration
-var _type = gl.FLOAT;   // the data is 32bit floats
-var _normalize = false; // don't normalize the data
+var _type = gl.UNSIGNED_BYTE;   // the data is 32bit floats
+var _normalize = true; // don't normalize the data
 var _stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
 var _offset = 0;        // start at the beginning of the buffer
 gl.vertexAttribPointer(colorAttributeLocation, _size, _type, _normalize, _stride, _offset)
