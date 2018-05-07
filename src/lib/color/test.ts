@@ -36,17 +36,25 @@ const colors = [
 describe('color', () => {
   describe('hexToRgb', () => {
     colors.forEach(c => {
-      it(c.name, () => {
+      it(`converts ${c.name}`, () => {
         const result = color.hexToRgb(c.hex);
 
         expect(result).toEqual(c.rgb);
       })
     })
+
+    it('accepts prepended #', () => {
+      const c = colors[0];
+      const hex = `#${c.hex}`;
+      const result = color.hexToRgb(hex);
+
+      expect(result).toEqual(c.rgb);
+    })
   });
 
   describe('hexToShaderRgb', () => {
     colors.forEach(c => {
-      it(c.name, () => {
+      it(`converts ${c.name}`, () => {
         const result = color.hexToShaderRgb(c.hex);
 
         expect(result).toEqual(c.shader);

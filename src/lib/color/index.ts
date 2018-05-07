@@ -3,7 +3,8 @@ type Hex = string
 type Rgb = Channel[]
 
 const hexToRgb = (hex: Hex): Rgb => {
-  const num = parseInt(hex, 16);
+  const value = hex.replace('#', '');
+  const num = parseInt(value, 16);
   const r = num >> 16;
   const g = (num >> 8) & 255;
   const b = num & 255;
