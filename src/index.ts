@@ -75,5 +75,5 @@ gl.bindVertexArray(vao);
 
 var primitiveType = gl.TRIANGLES;
 var offset = 0;
-var count = 3;
+var count = 6;
 gl.drawArrays(primitiveType, offset, count);
