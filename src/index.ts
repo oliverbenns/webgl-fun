@@ -1,3 +1,4 @@
+import Renderer from 'renderer';
 import vertexShaderSource from 'shaders/vertex.vert'
 import fragmentShaderSource from 'shaders/fragment.frag'
 import createShader from 'create-shader';
@@ -7,12 +8,8 @@ import vertices from 'data/vertices';
 import colors from 'data/colors';
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
-
-const gl = canvas.getContext('webgl2') as WebGL2RenderingContext
-
-if (!gl) {
-  console.log('WebGL is not supported. Sorry!');
-}
+const renderer = new Renderer(canvas);
+const { gl } = renderer;
 
 var vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
 var fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
