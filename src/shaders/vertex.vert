@@ -14,7 +14,7 @@ void main() {
   // gl_Position is a special variable a vertex shader
   // is responsible for setting
 
-  vec2 foo = a_position * u_translation;
+  vec2 foo = a_position + u_translation;
   gl_Position = vec4(foo, 1.0, 1.0);
 
   v_color = a_color;
