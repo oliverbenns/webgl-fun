@@ -17,9 +17,11 @@ var program = createProgram(gl, vertexShader, fragmentShader);
 
 var positionAttributeLocation = gl.getAttribLocation(program, 'a_position');
 var colorAttributeLocation = gl.getAttribLocation(program, 'a_color');
+var translationLocation = gl.getUniformLocation(program, 'u_translation');
 
 console.log('positionAttributeLocation', positionAttributeLocation);
 console.log('colorAttributeLocation', colorAttributeLocation);
+console.log('translationLocation', translationLocation);
 
 const vao = gl.createVertexArray();
 gl.bindVertexArray(vao);
@@ -63,6 +65,14 @@ gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 // Tell it to use our program (pair of shaders)
 gl.useProgram(program);
+
+// ==========
+// TRANSLATION
+//
+
+gl.uniform2f(translationLocation, -1.0, 1.0);
+
+// gl.uniform2f(translationLocation, 0.4, 0.4);
 // gl.uniform4f(modifierLocation, 5.0, 5.0, 5.0, 5.0);
 // const foo = gl.getUniform(program, modifierLocation)
 // console.log('foo', foo);
