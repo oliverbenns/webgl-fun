@@ -1,4 +1,4 @@
-const createProgram = (gl: WebGLRenderingContext, vertexShader: WebGLShader, fragmentShader: WebGLShader) => {
+const create = (gl: WebGLRenderingContext, vertexShader: WebGLShader, fragmentShader: WebGLShader) => {
   const program = gl.createProgram();
   gl.attachShader(program, vertexShader);
   gl.attachShader(program, fragmentShader);
@@ -14,6 +14,8 @@ const createProgram = (gl: WebGLRenderingContext, vertexShader: WebGLShader, fra
   }
 
   return program;
-}
+};
 
-export default createProgram
+export default {
+  create,
+};

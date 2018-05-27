@@ -1,4 +1,4 @@
-const createShader = (gl: WebGLRenderingContext, type: GLenum, source: GL.ShaderSource) => {
+const create = (gl: WebGLRenderingContext, type: GLenum, source: string) => {
   const shader = gl.createShader(type);
   gl.shaderSource(shader, source);
   gl.compileShader(shader);
@@ -13,6 +13,8 @@ const createShader = (gl: WebGLRenderingContext, type: GLenum, source: GL.Shader
   }
 
   return shader;
-}
+};
 
-export default createShader
+export default {
+  create,
+};

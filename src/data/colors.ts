@@ -1,4 +1,4 @@
-import color from 'lib/color';
+import color from 'core/lib/color';
 
 const red = color.hexToRgb('#ff0b00');
 const blue = color.hexToRgb('#00c4ff');
