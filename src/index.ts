@@ -22,8 +22,9 @@ const attributes = {
 }
 
 const uniforms = {
-  translation: gl.getUniformLocation(prog, 'u_translation'),
+  // translation: gl.getUniformLocation(prog, 'u_translation'),
   rotation: gl.getUniformLocation(prog, 'u_rotation'),
+  resolution: gl.getUniformLocation(prog, 'u_resolution'),
 }
 
 const vao = gl.createVertexArray();
@@ -60,17 +61,18 @@ gl.vertexAttribPointer(attributes.color, _size, _type, _normalize, _stride, _off
 // Tell WebGL that our clip space maps to the size of the canvas
 gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-// Clear the canvas
-gl.clearColor(0, 0, 0, 0);
-gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
 // Tell it to use our prog (pair of shaders)
 gl.useProgram(prog);
+
+// ========
+// RESOLUTION
+//
+gl.uniform2f(uniforms.resolution, gl.canvas.width, gl.canvas.height);
 
 // ==========
 // TRANSLATION
 //
-gl.uniform2f(uniforms.translation, 0.25, -0.4);
+// gl.uniform2f(uniforms.translation, 0.25, -0.4);
 
 // ==========
 // ROTATION
@@ -81,6 +83,10 @@ const s = Math.sin(angleInRadians);
 const c = Math.cos(angleInRadians);
 
 gl.uniform2f(uniforms.rotation, s, c);
+
+// Clear the canvas
+gl.clearColor(0, 0, 0, 0);
+gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 // Bind the attribute/buffer set we want.
 gl.bindVertexArray(vao);
