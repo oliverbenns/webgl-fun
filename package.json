@@ -39,6 +39,7 @@
       "^.+\\.ts": "ts-jest"
     },
     "testRegex": "test.ts",
-    "moduleFileExtensions": ["js", "ts"]
+    "moduleFileExtensions": ["js", "ts"],
+    "modulePaths": ["node_modules", "src"]
   }
 }
