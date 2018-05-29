@@ -33,13 +33,6 @@ describe('Matrix', () => {
 
       expect(a.data).toEqual(IDENTITY_MATRIX)
     })
-    // colors.forEach(c => {
-    //   it(`converts ${c.name}`, () => {
-    //     const result = color.hexToRgb(c.hex);
-
-    //     expect(result).toEqual(c.rgb);
-    //   })
-    // })
   });
 
   describe('multiply', () => {
