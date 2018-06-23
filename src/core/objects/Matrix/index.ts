@@ -1,45 +1,83 @@
 import { IDENTITY_MATRIX } from 'core/constants';
+import padLeft from 'core/lib/pad-left';
 
 class Matrix {
-  data: number[];
+  elements: number[];
 
-  constructor(data?: number[]) {
+  constructor(elements?: number[]) {
 
-    if (!data) {
-      this.data = IDENTITY_MATRIX;
-    } else if (data.length !== 9) {
-      console.error('Invalid matrix data supplied');
-      this.data = IDENTITY_MATRIX;
+    if (!elements) {
+      this.elements = IDENTITY_MATRIX;
+    } else if (elements.length !== 9) {
+      console.error('Invalid matrix elements supplied');
+      this.elements = IDENTITY_MATRIX;
     } else {
-      this.data = data;
+      this.elements = elements;
     }
   }
 
   public multiply(matrix: Matrix) {
-    const data = [
+    const elements = [
       // 0, 1, 2
-      this.data[0] * matrix.data[0] + this.data[1] * matrix.data[3] + this.data[2] * matrix.data[6],
-      this.data[0] * matrix.data[1] + this.data[1] * matrix.data[4] + this.data[2] * matrix.data[7],
-      this.data[0] * matrix.data[2] + this.data[1] * matrix.data[5] + this.data[2] * matrix.data[8],
+      this.elements[0] * matrix.elements[0] + this.elements[1] * matrix.elements[3] + this.elements[2] * matrix.elements[6],
+      this.elements[0] * matrix.elements[1] + this.elements[1] * matrix.elements[4] + this.elements[2] * matrix.elements[7],
+      this.elements[0] * matrix.elements[2] + this.elements[1] * matrix.elements[5] + this.elements[2] * matrix.elements[8],
 
       // 3, 4, 5
-      this.data[3] * matrix.data[0] + this.data[4] * matrix.data[3] + this.data[5] * matrix.data[6],
-      this.data[3] * matrix.data[1] + this.data[4] * matrix.data[4] + this.data[5] * matrix.data[7],
-      this.data[3] * matrix.data[2] + this.data[4] * matrix.data[5] + this.data[5] * matrix.data[8],
+      this.elements[3] * matrix.elements[0] + this.elements[4] * matrix.elements[3] + this.elements[5] * matrix.elements[6],
+      this.elements[3] * matrix.elements[1] + this.elements[4] * matrix.elements[4] + this.elements[5] * matrix.elements[7],
+      this.elements[3] * matrix.elements[2] + this.elements[4] * matrix.elements[5] + this.elements[5] * matrix.elements[8],
 
       // 6, 7, 8
-      this.data[6] * matrix.data[0] + this.data[7] * matrix.data[3] + this.data[8] * matrix.data[6],
-      this.data[6] * matrix.data[1] + this.data[7] * matrix.data[4] + this.data[8] * matrix.data[7],
-      this.data[6] * matrix.data[2] + this.data[7] * matrix.data[5] + this.data[8] * matrix.data[8],
+      this.elements[6] * matrix.elements[0] + this.elements[7] * matrix.elements[3] + this.elements[8] * matrix.elements[6],
+      this.elements[6] * matrix.elements[1] + this.elements[7] * matrix.elements[4] + this.elements[8] * matrix.elements[7],
+      this.elements[6] * matrix.elements[2] + this.elements[7] * matrix.elements[5] + this.elements[8] * matrix.elements[8],
     ]
 
 
-    return new Matrix(data)
+    return new Matrix(elements)
   }
 
-  // public translate() {}
-  // public rotate() {}
-  // public scale() {}
+  public print() {
+    const strings = this.elements.map(String);
+    const maxLen = strings.reduce((max, str) => str.length > max ? str.length : max, 0);
+
+    const out = strings.map((str, i) => {
+      const eol = (i + 1) % 3 === 0;
+      const postfix = eol ? '\n' : ' ';
+
+      return padLeft(str, maxLen) + postfix;
+    }).join('');
+
+    console.info(out);
+  }
+
+  static fromTranslation(x: number, y: number) {
+    return new Matrix([
+      1, 0, 0,
+      0, 1, 0,
+      x, y, 1,
+    ]);
+  };
+
+  static fromRotation(angleInRadians: number) {
+    const c = Math.cos(angleInRadians);
+    const s = Math.sin(angleInRadians);
+
+    return new Matrix([
+      c,-s, 0,
+      s, c, 0,
+      0, 0, 1,
+    ]);
+  };
+
+  static fromScaling(x: number, y: number) {
+    return new Matrix([
+      x, 0, 0,
+      0, y, 0,
+      0, 0, 1,
+    ]);
+  }
 }
 
 

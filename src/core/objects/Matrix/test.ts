@@ -16,22 +16,22 @@ const matrices = [
 
 describe('Matrix', () => {
   describe('constructor', () => {
-    it('constructs with data', () => {
+    it('constructs with elements', () => {
       const a = new Matrix(matrices[0])
 
-      expect(a.data).toEqual(matrices[0])
+      expect(a.elements).toEqual(matrices[0])
     })
 
-    it('constructs identity matrix without data', () => {
+    it('constructs identity matrix without elements', () => {
       const a = new Matrix()
 
-      expect(a.data).toEqual(IDENTITY_MATRIX)
+      expect(a.elements).toEqual(IDENTITY_MATRIX)
     })
 
-    it('constructs identity matrix with invalid data', () => {
+    it('constructs identity matrix with invalid elements', () => {
       const a = new Matrix([1, 2])
 
-      expect(a.data).toEqual(IDENTITY_MATRIX)
+      expect(a.elements).toEqual(IDENTITY_MATRIX)
     })
   });
 
@@ -41,7 +41,7 @@ describe('Matrix', () => {
       const b = new Matrix(matrices[1])
       const result = a.multiply(b)
 
-      expect(result.data).toEqual([
+      expect(result.elements).toEqual([
         114, 105, 38,
         64, 44, 13,
         40, 34, 15,
