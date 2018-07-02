@@ -4,9 +4,10 @@ import fragmentShaderSource from 'shaders/fragment.frag';
 import shader from 'core/lib/shader';
 import program from 'core/lib/program';
 import initBuffer from 'init-buffer';
-import vertices from 'data/vertices';
-import colors from 'data/colors';
 import angle from 'core/lib/angle';
+import Matrix from 'core/objects/Matrix';
+import scene from 'scene';
+console.log('scene', scene);
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 const renderer = new Renderer(canvas);
@@ -22,18 +23,19 @@ const attributes = {
 }
 
 const uniforms = {
-  // translation: gl.getUniformLocation(prog, 'u_translation'),
-  rotation: gl.getUniformLocation(prog, 'u_rotation'),
+  transform: gl.getUniformLocation(prog, 'u_transform'),
   resolution: gl.getUniformLocation(prog, 'u_resolution'),
 }
 
 const vao = gl.createVertexArray();
 gl.bindVertexArray(vao);
 
+const data = scene.render();
+
 // ==========
 // POSITIONS
 //
-initBuffer(gl, vertices);
+initBuffer(gl, data.vertices);
 
 gl.enableVertexAttribArray(attributes.position);
 
@@ -47,7 +49,7 @@ gl.vertexAttribPointer(attributes.position, size, type, normalize, stride, offse
 // ==========
 // COLORS
 //
-initBuffer(gl, colors);
+initBuffer(gl, data.colors);
 
 gl.enableVertexAttribArray(attributes.color);
 
@@ -69,20 +71,26 @@ gl.useProgram(prog);
 //
 gl.uniform2f(uniforms.resolution, gl.canvas.width, gl.canvas.height);
 
-// ==========
-// TRANSLATION
+// ========
+// TRANSFORM
 //
-// gl.uniform2f(uniforms.translation, 0.25, -0.4);
 
-// ==========
-// ROTATION
-//
-const angleInRadians = angle.degreesToRadians(0)
+// Compute the matrices
+const ang = angle.degreesToRadians(20);
+const rotationMatrix = Matrix.fromRotation(ang);
+const translationMatrix = Matrix.fromTranslation(300, 100);
+// const scalingMatrix = Matrix.fromScaling(1, 1)
 
-const s = Math.sin(angleInRadians);
-const c = Math.cos(angleInRadians);
+rotationMatrix.print()
+translationMatrix.print()
 
-gl.uniform2f(uniforms.rotation, s, c);
+const matrix = translationMatrix.multiply(rotationMatrix);
+matrix.print()
+
+const identity = new Matrix()
+
+gl.uniformMatrix3fv(uniforms.transform, false, identity.elements);
+
 
 // Clear the canvas
 gl.clearColor(0, 0, 0, 0);
