@@ -1,27 +1,27 @@
+import Geometry from 'core/objects/Geometry';
 import Matrix from 'core/objects/Matrix';
+import Vector from 'core/objects/Vector';
 
 interface Options {
   colors: number[];
-  vertices: number[];
+  vertices: Vector[];
 }
 
 class RenderObject {
-  public anchor: number[];
+  public anchor: Vector;
   public rotation: number;
-  public scale: number[];
-  public velocity: number[];
-
-  public colors: number[];
-  public vertices: number[];
+  public scale: Vector;
+  public velocity: Vector;
+  public geometry: Geometry;
 
   constructor(options: Options) {
-    this.colors = options.colors
-    this.vertices = options.vertices
+    // @TODO use instead of colors and vertices.
+    this.geometry = new Geometry(options.vertices, options.colors)
 
-    this.anchor = [0, 0];
+    this.anchor = new Vector();
     this.rotation = 0;
-    this.scale = [1, 1];
-    this.velocity = [0, 0];
+    this.scale = new Vector(1, 1);
+    this.velocity = new Vector();
   }
 
   // transformMatrix() {
