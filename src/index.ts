@@ -3,11 +3,9 @@ import vertexShaderSource from 'shaders/vertex.vert';
 import fragmentShaderSource from 'shaders/fragment.frag';
 import shader from 'core/lib/shader';
 import program from 'core/lib/program';
-import initBuffer from 'init-buffer';
 import angle from 'core/lib/angle';
 import Matrix from 'core/objects/Matrix';
 import scene from 'scene';
-console.log('scene', scene);
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 const renderer = new Renderer(canvas);
@@ -30,12 +28,14 @@ const uniforms = {
 const vao = gl.createVertexArray();
 gl.bindVertexArray(vao);
 
-const data = scene.render();
+const data = renderer.initScene(scene);
 
 // ==========
 // POSITIONS
 //
-initBuffer(gl, data.vertices);
+const verticesBuffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, verticesBuffer);
+gl.bufferData(gl.ARRAY_BUFFER, data.vertices, gl.STATIC_DRAW);
 
 gl.enableVertexAttribArray(attributes.position);
 
@@ -49,7 +49,10 @@ gl.vertexAttribPointer(attributes.position, size, type, normalize, stride, offse
 // ==========
 // COLORS
 //
-initBuffer(gl, data.colors);
+const colorsBuffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, colorsBuffer);
+gl.bufferData(gl.ARRAY_BUFFER, data.colors, gl.STATIC_DRAW);
+
 
 gl.enableVertexAttribArray(attributes.color);
 
@@ -59,6 +62,7 @@ var _normalize = true; // don't normalize the data
 var _stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
 var _offset = 0;        // start at the beginning of the buffer
 gl.vertexAttribPointer(attributes.color, _size, _type, _normalize, _stride, _offset)
+
 
 // Tell WebGL that our clip space maps to the size of the canvas
 gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
@@ -75,31 +79,37 @@ gl.uniform2f(uniforms.resolution, gl.canvas.width, gl.canvas.height);
 // TRANSFORM
 //
 
-// Compute the matrices
-const ang = angle.degreesToRadians(20);
-const rotationMatrix = Matrix.fromRotation(ang);
-const translationMatrix = Matrix.fromTranslation(300, 100);
-// const scalingMatrix = Matrix.fromScaling(1, 1)
+function draw() {
+  const { rotation, scale, position } = scene.entities[0]
 
-rotationMatrix.print()
-translationMatrix.print()
+  const matrix = new Matrix()
+    .scale(scale.x, scale.y)
+    .rotate(rotation)
+    .translate(position.x, position.y)
 
-const matrix = translationMatrix.multiply(rotationMatrix);
-matrix.print()
+  gl.uniformMatrix3fv(uniforms.transform, false, matrix.elements);
 
-const identity = new Matrix()
+  // Clear the canvas
+  gl.clearColor(0, 0, 0, 0);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-gl.uniformMatrix3fv(uniforms.transform, false, identity.elements);
+  // Bind the attribute/buffer set we want.
+  gl.bindVertexArray(vao);
 
+  var primitiveType = gl.TRIANGLES;
+  var offset = 0;
+  var count = 6;
+  gl.drawArrays(primitiveType, offset, count);
+}
 
-// Clear the canvas
-gl.clearColor(0, 0, 0, 0);
-gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+function tick() {
+  scene.preUpdate(1)
+  scene.update(1)
+  console.log('scene.entities[0].position', scene.entities[0].position);
 
-// Bind the attribute/buffer set we want.
-gl.bindVertexArray(vao);
+  draw()
 
-var primitiveType = gl.TRIANGLES;
-var offset = 0;
-var count = 6;
-gl.drawArrays(primitiveType, offset, count);
+  requestAnimationFrame(tick);
+}
+
+tick()

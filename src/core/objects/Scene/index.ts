@@ -1,32 +1,23 @@
-import RenderObject from 'core/objects/RenderObject';
+import Entity from 'core/objects/Entity';
 import Vector from 'core/objects/Vector';
 
-// @TODO: Use generic type here.
-const flatten = (a: any[], b: any) => a.concat(b)
-
 class Scene {
-  public renderObjects: RenderObject[]
+  public entities: Entity[]
 
   constructor() {
-    this.renderObjects = []
+    this.entities = []
   }
 
-  add(renderObject: RenderObject) {
-    this.renderObjects.push(renderObject);
+  add(entity: Entity) {
+    this.entities.push(entity);
   }
 
-  // @NOTE: This is not currently rendering. Just a quick grab method
-  render() {
-    const colors = this.renderObjects[0].geometry.colors.concat(this.renderObjects[1].geometry.colors);
-    const vertices = this.renderObjects[0].geometry.vertices.concat(this.renderObjects[1].geometry.vertices)
+  preUpdate(deltaTime: number) {
+    this.entities.forEach(o => o.preUpdate(1))
+  }
 
-    const colorData = colors.reduce(flatten, [])
-    const vertexData = vertices.map((v: Vector) => v.toArray()).reduce(flatten, [])
-
-    return {
-      colors: new Uint8Array(colorData),
-      vertices: new Float32Array(vertexData),
-    };
+  update(deltaTime: number) {
+    this.entities.forEach(o => o.update(1))
   }
 }
 

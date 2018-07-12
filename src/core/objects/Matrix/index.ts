@@ -16,7 +16,7 @@ class Matrix {
     }
   }
 
-  public multiply(matrix: Matrix) {
+  multiply(matrix: Matrix) {
     const elements = [
       // 0, 1, 2
       this.elements[0] * matrix.elements[0] + this.elements[1] * matrix.elements[3] + this.elements[2] * matrix.elements[6],
@@ -38,7 +38,7 @@ class Matrix {
     return new Matrix(elements)
   }
 
-  public print() {
+  print() {
     const strings = this.elements.map(String);
     const maxLen = strings.reduce((max, str) => str.length > max ? str.length : max, 0);
 
@@ -50,6 +50,21 @@ class Matrix {
     }).join('');
 
     console.info(out);
+  }
+
+  translate(x: number, y: number) {
+    const matrix = Matrix.fromTranslation(x, y);
+    return this.multiply(matrix);
+  }
+
+  scale(x: number, y: number) {
+    const matrix = Matrix.fromScaling(x, y);
+    return this.multiply(matrix);
+  }
+
+  rotate(angleInRadians: number) {
+    const matrix = Matrix.fromRotation(angleInRadians);
+    return this.multiply(matrix);
   }
 
   static fromTranslation(x: number, y: number) {

@@ -2,26 +2,41 @@ import Geometry from 'core/objects/Geometry';
 import Matrix from 'core/objects/Matrix';
 import Vector from 'core/objects/Vector';
 
-interface Options {
+export interface EntityOptions {
   colors: number[];
   vertices: Vector[];
 }
 
-class RenderObject {
+class Entity {
   public anchor: Vector;
   public rotation: number;
   public scale: Vector;
   public velocity: Vector;
   public geometry: Geometry;
+  public position: Vector
 
-  constructor(options: Options) {
-    // @TODO use instead of colors and vertices.
+  constructor(options: EntityOptions) {
     this.geometry = new Geometry(options.vertices, options.colors)
 
     this.anchor = new Vector();
     this.rotation = 0;
     this.scale = new Vector(1, 1);
     this.velocity = new Vector();
+    this.position = new Vector();
+  }
+
+  preUpdate(deltaTime: number) {
+    this.position.x += this.velocity.x * deltaTime
+    this.position.y += this.velocity.y * deltaTime
+  }
+
+  update(deltaTime: number) {
+    // noop
+  }
+
+  postUpdate() {
+    // create the transform matrix
+    // Maybe this isn't even done here but instead in the renderer?
   }
 
   // transformMatrix() {
@@ -32,4 +47,4 @@ class RenderObject {
   // }
 }
 
-export default RenderObject;
+export default Entity;

@@ -7,7 +7,7 @@ const blue = color.hexToRgb('#00c4ff');
 const green = color.hexToRgb('#01cd74');
 const yellow = color.hexToRgb('#fff200');
 
-// renderObject data
+// entity data
 const data = [
   {
     colors: [
