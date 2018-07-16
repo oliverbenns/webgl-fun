@@ -66,6 +66,22 @@ class Renderer {
     this.gl.bufferData(this.gl.ARRAY_BUFFER, data, this.gl.STATIC_DRAW);
   }
 
+  renderEntity(entity: Entity, index: number, vao: WebGLVertexArrayObject, transformUniform: WebGLUniformLocation) {
+    // @TODO: Not sure if this should be in here or in the entity code.
+    const matrix = new Matrix()
+      .scale(entity.scale.x, entity.scale.y)
+      .rotate(entity.rotation)
+      .translate(entity.position.x, entity.position.y);
+
+    this.gl.uniformMatrix3fv(transformUniform, false, matrix.elements);
+
+    const primitiveType = this.gl.TRIANGLES;
+    const offset = index * 3;
+    const count = entity.geometry.vertices.length;
+    this.gl.drawArrays(primitiveType, offset, count);
+  }
+
+  // @TODO: add vao and transform uniform as class member.
   render(scene: Scene, vao: WebGLVertexArrayObject, transformUniform: WebGLUniformLocation) {
     this.gl.clearColor(0, 0, 0, 0);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
@@ -73,23 +89,7 @@ class Renderer {
     // Bind the attribute/buffer set we want. - in setup?
     this.gl.bindVertexArray(vao);
 
-    scene.entities.forEach((e, i) => {
-      const { rotation, scale, position } = e
-
-      // @TODO: Not sure if this should be in here or in the entity code.
-      const matrix = new Matrix()
-        .scale(scale.x, scale.y)
-        .rotate(rotation)
-        .translate(position.x, position.y)
-
-      this.gl.uniformMatrix3fv(transformUniform, false, matrix.elements);
-
-      const primitiveType = this.gl.TRIANGLES;
-      const offset = i * 3;
-      const count = e.geometry.vertices.length;
-      this.gl.drawArrays(primitiveType, offset, count);
-
-    })
+    scene.entities.forEach((e, i) => { this.renderEntity(e, i, vao, transformUniform) })
   }
 }
 
