@@ -76,7 +76,7 @@ class Renderer {
     scene.entities.forEach((e, i) => {
       const { rotation, scale, position } = e
 
-      // @TODO: Not sure if this should be in here or in the game code.
+      // @TODO: Not sure if this should be in here or in the entity code.
       const matrix = new Matrix()
         .scale(scale.x, scale.y)
         .rotate(rotation)
@@ -86,20 +86,10 @@ class Renderer {
 
       const primitiveType = this.gl.TRIANGLES;
       const offset = i * 3;
-      const count = 3; // @TODO: entitiy vert length?
+      const count = e.geometry.vertices.length;
       this.gl.drawArrays(primitiveType, offset, count);
 
     })
-
-    // const primitiveType = this.gl.TRIANGLES;
-    // const offset = 0;
-    // const count = 3;
-    // this.gl.drawArrays(primitiveType, offset, count);
-
-    // const _primitiveType = this.gl.TRIANGLES;
-    // const _offset = 3;
-    // const _count = 3;
-    // this.gl.drawArrays(_primitiveType, _offset, _count);
   }
 }
 
