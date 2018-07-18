@@ -13,11 +13,11 @@ class Scene {
   }
 
   preUpdate(deltaTime: number) {
-    this.entities.forEach(o => o.preUpdate(1))
+    this.entities.forEach(e => e.preUpdate(deltaTime));
   }
 
   update(deltaTime: number) {
-    this.entities.forEach(o => o.update(1))
+    this.entities.forEach(e => e.update(deltaTime));
   }
 }
 
