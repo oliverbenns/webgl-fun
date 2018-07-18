@@ -2,6 +2,10 @@ import Entity from 'core/objects/Entity';
 import Vector from 'core/objects/Vector';
 import Scene from 'core/objects/Scene';
 import Matrix from 'core/objects/Matrix';
+import shader from 'core/lib/shader';
+import _program from 'core/lib/program';
+import vertexShaderSource from 'shaders/vertex.vert';
+import fragmentShaderSource from 'shaders/fragment.frag';
 
 // @TODO: Use generic type here.
 const flatten = (a: any[], b: any) => a.concat(b)
@@ -10,6 +14,12 @@ class Renderer {
   gl: WebGL2RenderingContext; // @TODO: make private
   colorsBuffer: WebGLBuffer;
   verticesBuffer: WebGLBuffer;
+  program: WebGLProgram;
+  vao: WebGLVertexArrayObject;
+  uniforms: {
+    transform: WebGLUniformLocation;
+    resolution: WebGLUniformLocation;
+  };
 
   constructor(canvas: HTMLCanvasElement) {
     const gl = canvas.getContext('webgl2') as WebGL2RenderingContext;
@@ -18,14 +28,31 @@ class Renderer {
       throw new Error('WebGL is not supported.');
     }
 
+    const vertexShader = shader.create(gl, gl.VERTEX_SHADER, vertexShaderSource);
+    const fragmentShader = shader.create(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+
+    const program = _program.create(gl, vertexShader, fragmentShader);
+    gl.useProgram(program);
+
     this.gl = gl;
     this.colorsBuffer = gl.createBuffer();
     this.verticesBuffer = gl.createBuffer();
+    this.program = program;
+    this.vao = gl.createVertexArray();
+    gl.bindVertexArray(this.vao);
+
+    this.uniforms = {
+      transform: gl.getUniformLocation(this.program, 'u_transform'),
+      resolution: gl.getUniformLocation(this.program, 'u_resolution'),
+    };
+
+    gl.uniform2f(this.uniforms.resolution, gl.canvas.width, gl.canvas.height);
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
   }
 
-  setVerticesAttributePointer(program: WebGLProgram) {
+  setVerticesAttributePointer() {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.verticesBuffer);
-    const positionAttribute = this.gl.getAttribLocation(program, 'a_position');
+    const positionAttribute = this.gl.getAttribLocation(this.program, 'a_position');
     this.gl.enableVertexAttribArray(positionAttribute);
 
     // @TODO: It seems if we normalise these values, the data
@@ -33,9 +60,9 @@ class Renderer {
     this.gl.vertexAttribPointer(positionAttribute, 2, this.gl.FLOAT, false, 0, 0);
   }
 
-  setColorsAttributePointer(program: WebGLProgram) {
+  setColorsAttributePointer() {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorsBuffer);
-    const colorAttribute = this.gl.getAttribLocation(program, 'a_color');
+    const colorAttribute = this.gl.getAttribLocation(this.program, 'a_color');
 
     this.gl.enableVertexAttribArray(colorAttribute);
     this.gl.vertexAttribPointer(colorAttribute, 4, this.gl.UNSIGNED_BYTE, true, 0, 0);
@@ -66,14 +93,14 @@ class Renderer {
     this.gl.bufferData(this.gl.ARRAY_BUFFER, data, this.gl.STATIC_DRAW);
   }
 
-  renderEntity(entity: Entity, index: number, vao: WebGLVertexArrayObject, transformUniform: WebGLUniformLocation) {
+  renderEntity(entity: Entity, index: number) {
     // @TODO: Not sure if this should be in here or in the entity code.
     const matrix = new Matrix()
       .scale(entity.scale.x, entity.scale.y)
       .rotate(entity.rotation)
       .translate(entity.position.x, entity.position.y);
 
-    this.gl.uniformMatrix3fv(transformUniform, false, matrix.elements);
+    this.gl.uniformMatrix3fv(this.uniforms.transform, false, matrix.elements);
 
     const primitiveType = this.gl.TRIANGLES;
     const offset = index * 3;
@@ -82,14 +109,11 @@ class Renderer {
   }
 
   // @TODO: add vao and transform uniform as class member.
-  render(scene: Scene, vao: WebGLVertexArrayObject, transformUniform: WebGLUniformLocation) {
+  render(scene: Scene) {
     this.gl.clearColor(0, 0, 0, 0);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 
-    // Bind the attribute/buffer set we want. - in setup?
-    this.gl.bindVertexArray(vao);
-
-    scene.entities.forEach((e, i) => { this.renderEntity(e, i, vao, transformUniform) })
+    scene.entities.forEach((e, i) => this.renderEntity(e, i))
   }
 }
 
