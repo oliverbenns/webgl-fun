@@ -12,6 +12,14 @@ class Scene {
     this.entities.push(entity);
   }
 
+  remove(entity: Entity) {
+    const i = this.entities.indexOf(entity);
+
+    if (i > -1) {
+      this.entities.splice(i, 1);
+    }
+  }
+
   preUpdate(deltaTime: number) {
     this.entities.forEach(e => e.preUpdate(deltaTime));
   }
