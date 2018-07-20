@@ -7,14 +7,7 @@ const padLeft = (value: string, padCount: number, char = ' ') => {
     return value
   }
 
-  // Apparently Typescript doesn't like the repeat method.
-  // and the es6 config isn't working.
-  // const pad = char.repeat(remainder)
-  let pad = ''
-
-  for (let i = 0; i < remainder; i++) {
-    pad += char
-  }
+  const pad = char.repeat(remainder)
 
   return pad + value
 }
