@@ -6,18 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="assets/img/favicon.png">
     <style>
-      body html, body {
+      html, body {
+        height: 100%;
+      }
+
+      body {
         background: #111;
         overflow: hidden;
         margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
       canvas {
         border: 1px solid red;
       }
+
+      .bs {
+        position: absolute;
+        width: 100%;
+        top: 10px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .b {
+        margin: 0 5px;
+      }
     </style>
   </head>
   <body>
+    <div class="bs">
+      <button type="button" class="b" value="square">Square</button>
+      <button type="button" class="b" value="circle">Circle</button>
+      <button type="button" class="b" value="triangle">Triangle</button>
+    </div>
     <canvas id="canvas" width="640" height="480">
     <script src="assets/js/bundle.js"></script>
   </body>
