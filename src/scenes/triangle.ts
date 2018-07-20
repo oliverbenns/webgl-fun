@@ -8,7 +8,7 @@ import data from 'data';
 const scene = new Scene();
 
 data
-  .map((options: any, i) => {
+  .map((options, i) => {
     const entity = new Entity(options);
 
     if (options.update) {
