@@ -4,10 +4,10 @@ import Vector from 'core/objects/Vector';
 // A better way would be to use a typed buffer array.
 
 class Geometry {
-  colors: number[];
+  colors: number[][];
   vertices: Vector[];
 
-  constructor(vertices: Vector[] = [], colors: number[] = []) {
+  constructor(vertices: Vector[] = [], colors: number[][] = []) {
     this.colors = colors;
     this.vertices = vertices;
   }

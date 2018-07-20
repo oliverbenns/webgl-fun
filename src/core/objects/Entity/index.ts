@@ -3,7 +3,7 @@ import Matrix from 'core/objects/Matrix';
 import Vector from 'core/objects/Vector';
 
 export interface EntityOptions {
-  colors: number[];
+  colors: number[][];
   vertices: Vector[];
 }
 
