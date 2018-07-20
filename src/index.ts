@@ -22,6 +22,9 @@ const addClickHandler = (b: HTMLButtonElement) => {
   b.addEventListener('click', (e: MouseEvent) => {
     const { value } = (<HTMLInputElement>e.target);
     activeScene = scenes[value];
+    // @TODO: Why don't I need to buff these?
+    // renderer.bufferVertices(activeScene);
+    // renderer.bufferColors(activeScene);
     console.log('activeScene', activeScene);
   })
 };
@@ -31,9 +34,9 @@ Array
   .forEach(addClickHandler);
 
 (function tick() {
-  scene.preUpdate(1);
-  scene.update(1);
+  activeScene.preUpdate(1);
+  activeScene.update(1);
 
-  renderer.render(scene);
+  renderer.render(activeScene);
   requestAnimationFrame(tick);
 })()
