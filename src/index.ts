@@ -6,7 +6,7 @@ import time from 'core/lib/time';
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 const renderer = new Renderer(canvas);
 
-let activeScene = scenes.square
+let activeScene = scenes.circle
 
 renderer.bufferVertices(activeScene);
 renderer.bufferColors(activeScene);
