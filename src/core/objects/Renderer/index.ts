@@ -104,7 +104,10 @@ class Renderer {
     this.gl.uniformMatrix3fv(this.uniforms.transform, false, matrix.elements);
 
     const primitiveType = this.gl.TRIANGLES;
-    const offset = index * 3;
+    // @NOTE: If we ever have scene entities of different vertex lengths,
+    // we will need to keep track of the offset. Either in a var or using a
+    // .reduce instead of .forEach?
+    const offset = index * entity.geometry.vertices.length;
     const count = entity.geometry.vertices.length;
     this.gl.drawArrays(primitiveType, offset, count);
   }
