@@ -6,18 +6,15 @@ import time from 'core/lib/time';
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 const renderer = new Renderer(canvas);
 
-const scene = scenes.triangle
+let activeScene = scenes.square
 
-renderer.bufferVertices(scene);
-renderer.bufferColors(scene);
+renderer.bufferVertices(activeScene);
+renderer.bufferColors(activeScene);
 
 renderer.setVerticesAttributePointer();
 renderer.setColorsAttributePointer();
 
-
 const buttonList = document.querySelectorAll('button');
-
-let activeScene = scenes.triangle
 
 const addClickHandler = (b: HTMLButtonElement) => {
   b.addEventListener('click', (e: MouseEvent) => {
