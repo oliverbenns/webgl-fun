@@ -1,6 +1,7 @@
 import Scene from 'core/objects/Scene';
 import Renderer from 'core/objects/Renderer';
-import scenes from 'scenes'
+import scenes from 'scenes';
+import time from 'core/lib/time';
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 const renderer = new Renderer(canvas);
@@ -22,7 +23,6 @@ const addClickHandler = (b: HTMLButtonElement) => {
   b.addEventListener('click', (e: MouseEvent) => {
     const { value } = (<HTMLInputElement>e.target);
     activeScene = scenes[value];
-    // @TODO: Why don't I need to buff these?
     renderer.bufferVertices(activeScene);
     renderer.bufferColors(activeScene);
   })
@@ -33,8 +33,10 @@ Array
   .forEach(addClickHandler);
 
 (function tick() {
-  activeScene.preUpdate(1);
-  activeScene.update(1);
+  const deltaTime = time.tick()
+
+  activeScene.preUpdate(deltaTime);
+  activeScene.update(deltaTime);
 
   renderer.render(activeScene);
   requestAnimationFrame(tick);
