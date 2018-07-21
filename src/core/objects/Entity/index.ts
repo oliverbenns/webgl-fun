@@ -1,9 +1,10 @@
 import Geometry from 'core/objects/Geometry';
+import Color from 'core/objects/Color';
 import Matrix from 'core/objects/Matrix';
 import Vector from 'core/objects/Vector';
 
 export interface EntityOptions {
-  colors: number[][];
+  colors: Color[];
   vertices: Vector[];
 }
 

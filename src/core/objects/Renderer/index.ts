@@ -72,6 +72,7 @@ class Renderer {
     const colors = scene.entities
       .map(e => e.geometry.colors) // @TODO: use pick fn
       .reduce(flatten, [])
+      .map(c => c.toArray())
       .reduce(flatten, []); // @TODO flatten deep?
 
     const data = new Uint8Array(colors);

@@ -1,19 +1,12 @@
-import color from 'core/lib/color';
+import Color from 'core/objects/Color';
 import Vector from 'core/objects/Vector';
 
-const red = color.hexToRgb('#ff0b00');
-const blue = color.hexToRgb('#00c4ff');
-
-const green = color.hexToRgb('#01cd74');
-const yellow = color.hexToRgb('#fff200');
-
-// entity data
 const data = [
   {
     colors: [
-      [...red, 255],
-      [...blue, 255],
-      [...red, 255],
+      Color.fromHex('#ff0b00'),
+      Color.fromHex('#00c4ff'),
+      Color.fromHex('#ff0b00'),
     ],
     vertices: [
       new Vector(0, 0),
@@ -28,9 +21,9 @@ const data = [
   },
   {
     colors: [
-      [...green, 255],
-      [...yellow, 255],
-      [...green, 255],
+      Color.fromHex('#01cd74'),
+      Color.fromHex('#fff200'),
+      Color.fromHex('#01cd74'),
     ],
     vertices: [
       new Vector(0, 0),
