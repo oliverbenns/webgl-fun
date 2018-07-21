@@ -23,9 +23,8 @@ const addClickHandler = (b: HTMLButtonElement) => {
     const { value } = (<HTMLInputElement>e.target);
     activeScene = scenes[value];
     // @TODO: Why don't I need to buff these?
-    // renderer.bufferVertices(activeScene);
-    // renderer.bufferColors(activeScene);
-    console.log('activeScene', activeScene);
+    renderer.bufferVertices(activeScene);
+    renderer.bufferColors(activeScene);
   })
 };
 

@@ -1,19 +1,27 @@
 import { EntityOptions } from 'core/objects/Entity';
+import Color from 'core/objects/Color';
 import Entity from 'core/objects/Entity';
 import Scene from 'core/objects/Scene';
 import Vector from 'core/objects/Vector';
 
-import data from 'data';
-
 const scene = new Scene();
 
-const options = {
-  colors: data[0].colors,
-  vertices: data[0].vertices,
-}
-const entity = new Entity(options);
-entity.update = data[0].update;
+const one = new Entity({
+  colors: [
+    Color.fromHex('#3498db'),
+    Color.fromHex('#a569bd'),
+    Color.fromHex('#3498db'),
+  ],
+  vertices: [
+    new Vector(200, 200),
+    new Vector(300, 200),
+    new Vector(200, 300),
+  ],
+});
 
-scene.add(entity)
+one.velocity.x = 0.25;
+one.velocity.y = 0.25;
+
+scene.add(one);
 
 export default scene
