@@ -23,14 +23,14 @@ class Circle extends Entity {
       new Vector(radius, 0),
     ];
 
-    const iterationAngle = 360 / polyCount
+    const iterationAngle = 360 / polyCount;
 
     for (let i = 0; i < polyCount; i++) {
       const angle = _angle.degreesToRadians(iterationAngle * i);
 
-      vertices.push(rotateVector(baseTriangle[0], angle))
-      vertices.push(rotateVector(baseTriangle[1], angle))
-      vertices.push(rotateVector(baseTriangle[2], angle))
+      vertices.push(rotateVector(baseTriangle[0], angle));
+      vertices.push(rotateVector(baseTriangle[1], angle));
+      vertices.push(rotateVector(baseTriangle[2], angle));
 
       colors.push(Color.fromHex('#dddddd'));
       colors.push(Color.fromHex('#3498db'));
@@ -42,8 +42,9 @@ class Circle extends Entity {
 }
 
 const one = new Circle(100, 18);
-one.position.x = 300
-one.position.y = 300
+one.position.x = 300;
+one.position.y = 300;
+
 scene.add(one);
 
 
