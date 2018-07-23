@@ -19,10 +19,10 @@ const one = new Entity({
   ],
 })
 
+one.position = new Vector(150, 150);
+
 one.update = function(deltaTime: number) {
-  this.rotation += 0.015 * deltaTime;
-  this.scale.x += 0.005 * deltaTime;
-  this.scale.y += 0.005 * deltaTime;
+  this.rotation += Math.PI * deltaTime;
 }
 
 const two = new Entity({
@@ -38,14 +38,13 @@ const two = new Entity({
   ],
 })
 
-two.update = function() {
-  // @TODO: We do not need to set this on every frame.
-  // Find a way to provide this in constructor or a setup method.
-  this.velocity.x = 0.5
-  this.velocity.y = 0.5
+two.position = new Vector(400, 300);
+
+two.update = function(deltaTime: number) {
+  this.rotation += Math.PI * deltaTime;
 }
 
-scene.add(one);
 scene.add(two);
+scene.add(one);
 
 export default scene
