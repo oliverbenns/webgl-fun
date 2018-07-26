@@ -17,15 +17,16 @@ class Circle extends Entity {
       v.x * Math.sin(angle) + v.y * Math.cos(angle),
     );
 
+    const iterationAngle = 360 / polyCount;
+
     const baseTriangle = [
       new Vector(0, 0),
       new Vector(0, radius),
-      new Vector(radius, 0),
+      rotateVector(new Vector(0, radius), _angle.degreesToRadians(-iterationAngle)),
     ];
 
-    const iterationAngle = 360 / polyCount;
-
     for (let i = 0; i < polyCount; i++) {
+
       const angle = _angle.degreesToRadians(iterationAngle * i);
 
       vertices.push(rotateVector(baseTriangle[0], angle));
@@ -41,9 +42,9 @@ class Circle extends Entity {
   }
 }
 
-const one = new Circle(100, 18);
-one.position.x = 300;
-one.position.y = 300;
+const one = new Circle(100, 100);
+one.position.x = 320;
+one.position.y = 250;
 
 scene.add(one);
 
