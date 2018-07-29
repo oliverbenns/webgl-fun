@@ -1,3 +1,5 @@
+import clamp from 'core/lib/clamp';
+
 type Channel = number
 type Hex = string
 type Rgb = Channel[]
@@ -22,7 +24,10 @@ const hexToShaderRgb = (hex: Hex): Rgb => {
   });
 };
 
+const clampRgb = (value: number) => clamp(value, 0, 255);
+
 export default {
+  clampRgb,
   hexToRgb,
   hexToShaderRgb,
 };
