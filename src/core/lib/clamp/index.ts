@@ -6,11 +6,11 @@ const clamp = (value: number, min?: number, max?: number) => {
   let clampedValue = value;
 
   if (min !== undefined) {
-    clampedValue = Math.max(value, min);
+    clampedValue = Math.max(clampedValue, min);
   }
 
   if (max !== undefined) {
-    clampedValue = Math.min(value, max);
+    clampedValue = Math.min(clampedValue, max);
   }
 
   return clampedValue;
