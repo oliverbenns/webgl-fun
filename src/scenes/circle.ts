@@ -4,6 +4,7 @@ import Entity from 'core/objects/Entity';
 import Scene from 'core/objects/Scene';
 import Vector from 'core/objects/Vector';
 import _angle from 'core/lib/angle';
+import _color from 'core/lib/color';
 
 const scene = new Scene();
 
@@ -17,36 +18,57 @@ class Circle extends Entity {
       v.x * Math.sin(angle) + v.y * Math.cos(angle),
     );
 
-    const iterationAngle = 360 / polyCount;
+    const polyAngle = 360 / polyCount;
 
     const baseTriangle = [
       new Vector(0, 0),
       new Vector(0, radius),
-      rotateVector(new Vector(0, radius), _angle.degreesToRadians(-iterationAngle)),
+      rotateVector(new Vector(0, radius), _angle.degreesToRadians(polyAngle)),
     ];
 
-    for (let i = 0; i < polyCount; i++) {
+    const bitsPerPoly = (255 * 6) / polyCount;
 
-      const angle = _angle.degreesToRadians(iterationAngle * i);
+    let r = 255;
+    let g = 0;
+    let b = 0;
+
+    for (let i = 0; i < polyCount; i++) {
+      const angle = _angle.degreesToRadians(polyAngle * i);
 
       vertices.push(rotateVector(baseTriangle[0], angle));
       vertices.push(rotateVector(baseTriangle[1], angle));
       vertices.push(rotateVector(baseTriangle[2], angle));
 
-      colors.push(Color.fromHex('#dddddd'));
-      colors.push(Color.fromHex('#3498db'));
-      colors.push(Color.fromHex('#3498db'));
+      const color = new Color(r, g, b);
+
+      colors.push(color);
+      colors.push(color);
+      colors.push(color);
+
+      if (r === 255 && g < 255 && b === 0) {
+        g = _color.clampRgb(g + bitsPerPoly);
+      } else if (r <= 255 && r > 0 && g === 255) {
+        r = _color.clampRgb(r - bitsPerPoly);
+      } else if (g === 255 && b < 255) {
+        b = _color.clampRgb(b + bitsPerPoly);
+      } else if (g <= 255 && g > 0 && b === 255) {
+        g = _color.clampRgb(g - bitsPerPoly);
+      } else if (b === 255 && r < 255) {
+        r = _color.clampRgb(r + bitsPerPoly);
+      } else {
+        b = _color.clampRgb(b - bitsPerPoly);
+      }
     }
 
     super({ colors, vertices });
   }
 }
 
-const one = new Circle(100, 100);
+const one = new Circle(200, 1000);
 one.position.x = 320;
 one.position.y = 250;
 
 scene.add(one);
 
 
-export default scene
+export default scene;
