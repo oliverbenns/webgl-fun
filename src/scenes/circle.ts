@@ -62,13 +62,27 @@ class Circle extends Entity {
 
     super({ colors, vertices });
   }
+
+
+  update(deltaTime: number) {
+    this.scale.x += 0.01;
+    this.scale.y += 0.01;
+  }
 }
 
-const one = new Circle(200, 1000);
-one.position.x = 320;
+const radius = 30
+const polyCount = 100
+
+const one = new Circle(radius, polyCount);
+one.position.x = 200;
 one.position.y = 250;
 
+const two = new Circle(radius, polyCount);
+two.position.x = 420;
+two.position.y = 250;
+
 scene.add(one);
+scene.add(two);
 
 
 export default scene;
