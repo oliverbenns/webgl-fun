@@ -1,10 +1,11 @@
 import Scene from 'core/objects/Scene';
 import Renderer from 'core/objects/Renderer';
+import TimeTicker from 'core/objects/TimeTicker';
 import scenes from 'scenes';
-import time from 'core/lib/time';
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 const renderer = new Renderer(canvas);
+const timeTicker = new TimeTicker()
 
 let activeScene = scenes.circle
 
@@ -30,10 +31,10 @@ Array
   .forEach(addClickHandler);
 
 (function tick() {
-  const deltaTime = time.tick()
+  timeTicker.tick()
 
-  activeScene.preUpdate(deltaTime);
-  activeScene.update(deltaTime);
+  activeScene.preUpdate(timeTicker.deltaTime);
+  activeScene.update(timeTicker.deltaTime);
 
   renderer.render(activeScene);
   requestAnimationFrame(tick);
