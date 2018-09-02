@@ -7,7 +7,7 @@ const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 const renderer = new Renderer(canvas);
 const timeTicker = new TimeTicker()
 
-let activeScene = scenes.circle
+let activeScene = scenes.square
 
 renderer.bufferVertices(activeScene);
 renderer.bufferColors(activeScene);
