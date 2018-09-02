@@ -3,10 +3,19 @@ import Color from 'core/objects/Color';
 import Entity from 'core/objects/Entity';
 import Scene from 'core/objects/Scene';
 import Vector from 'core/objects/Vector';
+import lerp from 'core/lib/lerp';
+
+const foo = lerp(100, 400, 0.5) ;
+console.log('foo', foo); //250
 
 const scene = new Scene();
 
+const startDestination = 100
+const endDestination = 400
+
 class Rectangle extends Entity {
+  private startTime: number
+
   constructor(width: number, height: number) {
     super({
       colors: [
@@ -26,14 +35,30 @@ class Rectangle extends Entity {
         new Vector(width, height),
       ],
     })
+
+    this.startTime = Date.now();
   }
 }
 
 const one = new Rectangle(100, 100);
-one.velocity.y = 10;
-one.position.x = 150;
-one.position.y = 150;
 scene.add(one);
+
+one.update = function(deltaTime: number) {
+  const newTime = Date.now();
+  const duration = 2;
+
+  const progress = (newTime - this.startTime) / duration / 1000; // percent
+  console.log('progress * 1000', progress * 1000);
+  console.log('progress', progress);
+
+  this.position.x = lerp(100, 400, progress)
+
+  if (progress >= 1) {
+    this.startTime = Date.now()
+  }
+}
+
+one.update()
 
 const two = new Rectangle(100, 100);
 two.position.x = 400;
