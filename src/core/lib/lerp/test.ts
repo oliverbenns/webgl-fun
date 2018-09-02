@@ -18,4 +18,10 @@ describe('lerp', () => {
 
     expect(result).toBe(15);
   })
+
+  it('returns correct result when percentage is over 1', () => {
+    const result = lerp(30, 60, 1.5);
+
+    expect(result).toBe(75);
+  })
 });
