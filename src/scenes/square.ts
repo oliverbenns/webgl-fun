@@ -13,9 +13,10 @@ interface Options {
 }
 
 class Rectangle extends Entity {
-  private startTime: number
   private loopDuration: number
   private progressInPercent: number
+  private timeSinceLoopStart: number
+
 
   constructor(width: number, height: number, options: Options = {}) {
     super({
@@ -37,23 +38,30 @@ class Rectangle extends Entity {
       ],
     })
 
-    this.startTime = Date.now();
     this.progressInPercent = options.progressInPercent || 0;
     this.loopDuration = 4;
+    this.timeSinceLoopStart = 0
   }
 
-  updateLoopProgress() {
+  updateLoopProgress(deltaTime: number) {
+    this.timeSinceLoopStart += deltaTime;
     // @TODO: do not run first time or somehow make use of initial progressInPercent.
-    const newTime = Date.now();
 
-    const timeSinceLoopStart = newTime - this.startTime;
-    const loopProgress = timeSinceLoopStart / this.loopDuration; // ms
-    // console.log('loopProgress', loopProgress);
-    this.progressInPercent = loopProgress / 1000;
+    const loopProgress = this.timeSinceLoopStart / this.loopDuration;
+    const isFirstLoop = loopProgress < this.progressInPercent;
+
+    // The time should already be halfway through. Not at the start.
+
+    if (isFirstLoop) {
+      this.progressInPercent += loopProgress;
+    }
+    else {
+      this.progressInPercent = loopProgress;
+    }
   }
 
   update(deltaTime: number) {
-    this.updateLoopProgress();
+    this.updateLoopProgress(deltaTime);
 
     if (this.progressInPercent < 0.25) {
       const pathProgressInPercent = this.progressInPercent / 0.25;
@@ -83,13 +91,14 @@ class Rectangle extends Entity {
     }
 
     if (this.progressInPercent >= 1) {
-      this.startTime = Date.now()
+      this.progressInPercent = 0;
+      this.timeSinceLoopStart = 0;
     }
   }
 }
 
-const one = new Rectangle(100, 100);
-scene.add(one);
+// const one = new Rectangle(100, 100);
+// scene.add(one);
 
 const two = new Rectangle(100, 100, { progressInPercent: 0.5 });
 scene.add(two);
