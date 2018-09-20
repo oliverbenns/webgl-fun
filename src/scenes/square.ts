@@ -19,12 +19,12 @@ class Rectangle extends Entity {
   constructor(width: number, height: number, options: Options = {}) {
     super({
       colors: [
-        Color.fromHex('#3498db'), // a
-        Color.fromHex('#a569bd'), // b
-        Color.fromHex('#808000'), // c
-        Color.fromHex('#808000'), // c
-        Color.fromHex('#a569bd'), // b
-        Color.fromHex('#ff9e00'), // d
+        Color.fromHex('#11998e'), // a
+        Color.fromHex('#38ef7d'), // b
+        Color.fromHex('#11998e'), // c
+        Color.fromHex('#11998e'), // c
+        Color.fromHex('#38ef7d'), // b
+        Color.fromHex('#38ef7d'), // d
       ],
       vertices: [
         new Vector(0, 0),
