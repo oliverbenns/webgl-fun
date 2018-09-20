@@ -17,6 +17,15 @@ class Vector {
 
     return Math.sqrt(x + y);
   }
+
+  equals(a: Vector) {
+    return this.x === a.x && this.y === a.y;
+  }
+
+  update(x = 0, y = 0) {
+    this.x = x;
+    this.y = y;
+  }
 }
 
 export default Vector
