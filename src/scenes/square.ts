@@ -88,7 +88,7 @@ const rectCount = 2;
 
 for(let i = 0; i < rectCount; i++) {
   const loopOffset = i / rectCount;
-  const rect = new Rectangle(40, 40, { loopOffset });
+  const rect = new Rectangle(50, 50, { loopOffset });
 
   scene.add(rect);
 }
