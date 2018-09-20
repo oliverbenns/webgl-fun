@@ -95,11 +95,18 @@ class Renderer {
   }
 
   renderEntity(entity: Entity, index: number) {
-    // @TODO: Not sure if this should be in here or in the entity code.
     const matrix = new Matrix()
-      .scale(entity.scale.x, entity.scale.y)
-      .rotate(entity.rotation)
-      .translate(entity.position.x, entity.position.y);
+
+    // @TODO: Not sure if this should be in here or in the entity code.
+    matrix.scale(entity.scale.x, entity.scale.y);
+
+    const origin = new Vector();
+
+    matrix.translate(entity.anchor.x, entity.anchor.y);
+    matrix.rotate(entity.rotation);
+    matrix.translate(-entity.anchor.x, -entity.anchor.y);
+
+    matrix.translate(entity.position.x, entity.position.y);
 
     this.gl.uniformMatrix3fv(this.uniforms.transform, false, matrix.elements);
 

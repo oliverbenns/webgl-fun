@@ -3,6 +3,7 @@ import Color from 'core/objects/Color';
 import Entity from 'core/objects/Entity';
 import Scene from 'core/objects/Scene';
 import Vector from 'core/objects/Vector';
+import Timer from 'core/objects/Timer';
 import lerp from 'core/lib/lerp';
 import clamp from 'core/lib/clamp';
 
@@ -13,8 +14,7 @@ interface Options {
 }
 
 class Rectangle extends Entity {
-  private loopDuration: number
-  private loopProgress: number
+  private timer: Timer
 
   constructor(width: number, height: number, options: Options = {}) {
     super({
@@ -36,52 +36,50 @@ class Rectangle extends Entity {
       ],
     })
 
-    this.loopProgress = options.loopOffset || 0;
-    this.loopDuration = 3;
+    this.timer = new Timer(10, options.loopOffset);
+    this.anchor.x = -(width / 2);
+    this.anchor.y = -(height / 2);
   }
 
-  updateLoopProgress(deltaTime: number) {
-    const incrementTime = deltaTime / this.loopDuration; // add duration
-
-    this.loopProgress += incrementTime;
-
-    if (this.loopProgress > 1) {
-      this.loopProgress = 0;
-    }
+  preUpdate(deltaTime: number) {
+    this.timer.update(deltaTime);
   }
 
   update(deltaTime: number) {
-    this.updateLoopProgress(deltaTime);
-
-    if (this.loopProgress < 0.25) {
-      const pathProgressInPercent = this.loopProgress / 0.25;
+    if (this.timer.progress < 0.25) {
+      const pathProgressInPercent = this.timer.progress / 0.25;
       const targetPosition = lerp(100, 400, pathProgressInPercent);
 
+      this.rotation = lerp(0, Math.PI * 0.5, pathProgressInPercent);
       this.position.x = targetPosition;
       this.position.y = 300;
     }
 
-    else if (this.loopProgress >= 0.25 && this.loopProgress < 0.5) {
-      const pathProgressInPercent = (this.loopProgress - 0.25) * 4;
+    else if (this.timer.progress >= 0.25 && this.timer.progress < 0.5) {
+      const pathProgressInPercent = (this.timer.progress - 0.25) * 4;
       const targetPosition = lerp(300, 100, pathProgressInPercent);
-      this.position.y = targetPosition;
+
+      this.rotation = lerp(Math.PI * 0.5, Math.PI, pathProgressInPercent);
       this.position.x = 400;
+      this.position.y = targetPosition;
     }
 
-    else if (this.loopProgress >= 0.5 && this.loopProgress <= 0.75) {
-      const pathProgressInPercent = (this.loopProgress - 0.5) * 4;
+    else if (this.timer.progress >= 0.5 && this.timer.progress <= 0.75) {
+      const pathProgressInPercent = (this.timer.progress - 0.5) * 4;
       const targetPosition = lerp(400, 100, pathProgressInPercent);
 
+      this.rotation = lerp(Math.PI, Math.PI * 1.5, pathProgressInPercent);
       this.position.x = targetPosition;
       this.position.y = 100;
     }
 
-    else if (this.loopProgress >= 0.75 && this.loopProgress <= 1) {
-      const pathProgressInPercent = (this.loopProgress - 0.75) * 4;
+    else if (this.timer.progress >= 0.75 && this.timer.progress <= 1) {
+      const pathProgressInPercent = (this.timer.progress - 0.75) * 4;
       const targetPosition = lerp(100, 300, pathProgressInPercent);
 
-      this.position.y = targetPosition;
+      this.rotation = lerp(Math.PI * 1.5, 0, pathProgressInPercent);
       this.position.x = 100;
+      this.position.y = targetPosition;
     }
   }
 }
