@@ -48,45 +48,45 @@ class Rectangle extends Entity {
   update(deltaTime: number) {
     if (this.timer.progress < 0.25) {
       const pathProgressInPercent = this.timer.progress / 0.25;
-      const targetPosition = lerp(100, 400, pathProgressInPercent);
+      const targetPosition = lerp(220, 420, pathProgressInPercent);
 
       const start = 0;
       const end = (Math.PI * 0.5);
       this.rotation = lerp(start, end, pathProgressInPercent);
       this.position.x = targetPosition;
-      this.position.y = 300;
+      this.position.y = 340;
     }
 
     else if (this.timer.progress >= 0.25 && this.timer.progress < 0.5) {
       const pathProgressInPercent = (this.timer.progress - 0.25) * 4;
-      const targetPosition = lerp(300, 100, pathProgressInPercent);
+      const targetPosition = lerp(340, 140, pathProgressInPercent);
 
       const start = Math.PI * 0.5;
       const end = Math.PI;
       this.rotation = lerp(start, end, pathProgressInPercent);
-      this.position.x = 400;
+      this.position.x = 420;
       this.position.y = targetPosition;
     }
 
     else if (this.timer.progress >= 0.5 && this.timer.progress <= 0.75) {
       const pathProgressInPercent = (this.timer.progress - 0.5) * 4;
-      const targetPosition = lerp(400, 100, pathProgressInPercent);
+      const targetPosition = lerp(420, 220, pathProgressInPercent);
 
       const start = Math.PI;
       const end = Math.PI * 1.5;
       this.rotation = lerp(start, end, pathProgressInPercent);
       this.position.x = targetPosition;
-      this.position.y = 100;
+      this.position.y = 140;
     }
 
     else if (this.timer.progress >= 0.75 && this.timer.progress <= 1) {
       const pathProgressInPercent = (this.timer.progress - 0.75) * 4;
-      const targetPosition = lerp(100, 300, pathProgressInPercent);
+      const targetPosition = lerp(140, 340, pathProgressInPercent);
 
       const start = Math.PI * 1.5;
       const end = Math.PI * 2;
       this.rotation = lerp(start, end, pathProgressInPercent);
-      this.position.x = 100;
+      this.position.x = 220;
       this.position.y = targetPosition;
     }
   }
@@ -96,7 +96,7 @@ const rectCount = 4;
 
 for(let i = 0; i < rectCount; i++) {
   const loopOffset = i / rectCount;
-  const rect = new Rectangle(50, 50, { loopOffset });
+  const rect = new Rectangle(40, 40, { loopOffset });
 
   scene.add(rect);
 }
