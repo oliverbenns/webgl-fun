@@ -36,7 +36,7 @@ class Rectangle extends Entity {
       ],
     })
 
-    this.timer = new Timer(10, options.loopOffset);
+    this.timer = new Timer(5, options.loopOffset);
     this.anchor.x = -(width / 2);
     this.anchor.y = -(height / 2);
   }
@@ -92,7 +92,7 @@ class Rectangle extends Entity {
   }
 }
 
-const rectCount = 2;
+const rectCount = 4;
 
 for(let i = 0; i < rectCount; i++) {
   const loopOffset = i / rectCount;
