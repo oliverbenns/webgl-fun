@@ -65,8 +65,10 @@ class Circle extends Entity {
 
 
   update(deltaTime: number) {
-    this.scale.x += 0.01;
-    this.scale.y += 0.01;
+    const centralAnchor = new Vector(300, 200);
+    this.scale.x += 0.005;
+    this.scale.y += 0.005;
+    this.rotation += 0.05;
   }
 }
 
@@ -74,15 +76,12 @@ const radius = 30
 const polyCount = 100
 
 const one = new Circle(radius, polyCount);
-one.position.x = 200;
-one.position.y = 250;
+one.position.x = 320;
+one.position.y = 240;
 
-const two = new Circle(radius, polyCount);
-two.position.x = 420;
-two.position.y = 250;
+// one.anchor = new Vector(300, 300)
 
 scene.add(one);
-scene.add(two);
 
 
 export default scene;
